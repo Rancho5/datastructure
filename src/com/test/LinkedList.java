@@ -61,6 +61,48 @@ public class LinkedList<T> {
         }
     }
 
+    public void remove(int location){
+        if(location >= 0 && location < size){
+            Link<T> link = voidLink;
+            if(location < size/2){
+                for(int i = 0; i <= location; i++){
+                    link = link.next;
+                }
+            }else{
+                for(int i = size; i > location; i--){
+                    link = link.previous;
+                }
+            }
+            link.previous.next = link.next;
+            link.next.previous = link.previous;
+            size--;
+        }else{
+            throw new IndexOutOfBoundsException();
+        }
+
+    }
+
+    //return the changed data
+    public T set(int location, T data){
+        if(location >= 0 && location < size){
+            Link<T> link = voidLink;
+            if(location < size/2){
+                for(int i = 0; i <= location; i++){
+                    link = link.next;
+                }
+            }else{
+                for(int i = size; i > location; i--){
+                    link = link.previous;
+                }
+            }
+            T temp = link.data;
+            link.data = data;
+            return temp;
+        }else{
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
     //print elements in LinkedList
     public void printData(){
         Link<T> link = voidLink.next;
@@ -77,10 +119,25 @@ public class LinkedList<T> {
         ll.add("element2");
         ll.add("element3");
         ll.add("element4");
+        ll.add("element5");
+        ll.add("element6");
+        ll.add("element7");
+        ll.add("element8");
+        System.out.print("LinkedList: ");
         ll.printData();
 
-        ll.add(1,"newelement1");
-        ll.add(4,"newelement2");
+        ll.add(0,"insertElement1");
+        ll.add(9,"insertElement2");
+        System.out.print("test add: ");
+        ll.printData();
+
+        ll.remove(9);
+        ll.remove(0);
+        System.out.print("test remove: ");
+        ll.printData();
+
+        ll.set(2, "setElement1");
+        System.out.print("test set: ");
         ll.printData();
     }
 
