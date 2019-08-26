@@ -103,6 +103,27 @@ public class LinkedList<T> {
         }
     }
 
+    public int contains(Object data){           //此处传入object类型而不是泛型T，可能是因为考虑到数据可能为null
+        Link link = voidLink.next;
+        if(data != null){                       //不要忘记考虑null !!!
+            for(int i = 0; i < size; i++){
+                if(link.data.equals(data))
+                    return i;
+                link = link.next;
+            }
+        }else{
+            int location = 0;
+            while(link != voidLink){
+                if(link.data == null){
+                    return location;
+                }
+                location += 1;
+                link = link.next;
+            }
+        }
+        return -1;
+    }
+
     //print elements in LinkedList
     public void printData(){
         Link<T> link = voidLink.next;
@@ -139,6 +160,10 @@ public class LinkedList<T> {
         ll.set(2, "setElement1");
         System.out.print("test set: ");
         ll.printData();
+
+        System.out.println(ll.contains("element1"));
+        System.out.println(ll.contains("element8"));
+        System.out.println(ll.contains("element9"));
     }
 
 }
