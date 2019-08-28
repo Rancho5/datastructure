@@ -105,7 +105,7 @@ public class LinkedList<T> {
 
     public int contains(Object data){           //此处传入object类型而不是泛型T，可能是因为考虑到数据可能为null
         Link link = voidLink.next;
-        if(data != null){                       //不要忘记考虑null !!!
+        if(data != null){                       //Don't forget to consider null !!!
             for(int i = 0; i < size; i++){
                 if(link.data.equals(data))
                     return i;
