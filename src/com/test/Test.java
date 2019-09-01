@@ -2,7 +2,7 @@ package com.test;
 
 public class Test{
     public static void main(String[] args){
-        int[] arr = new int[2];
+        int[] arr = new int[3];
 
     }
 }
