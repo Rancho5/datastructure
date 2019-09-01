@@ -2,8 +2,7 @@ package com.test;
 
 public class Test{
     public static void main(String[] args){
-        int[] arr = new int[3];
-
+        int[] arr = new int[4];
 
     }
 }
