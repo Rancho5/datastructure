@@ -6,14 +6,10 @@ import java.util.HashMap;
 
 public class Test{
     public static void main(String[] args){
-        HashMap hm = new HashMap();
-        hm.put(2, 12);
-        hm.put(2, 33);
-        hm.put('2', 34);
-        System.out.println(hm.entrySet());
-
-        hm.remove(2);
-        System.out.println(hm);
+        StringBuffer sb = new StringBuffer();
+        String str;
+        str = sb.append("0").toString();
+        System.out.println(str);
     }
 }
 
