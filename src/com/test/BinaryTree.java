@@ -11,6 +11,10 @@ package com.test;
 二叉树的遍历：前序遍历（根-左-右）、中序遍历（左-根-右）、后序遍历（左-右-根）、层序遍历
  */
 
+import sun.reflect.generics.tree.Tree;
+import java.util.LinkedList;
+import java.util.ArrayList;
+
 public class BinaryTree {
     private TreeNode root = null;
 
@@ -97,8 +101,64 @@ public class BinaryTree {
                 s.push(n.leftChild);
             System.out.println(n.data);
         }
+    }
+
+    /**
+     * 层序遍历--利用队列
+     */
+    public void leverOrder(TreeNode node){
+        if(node == null)
+            return;
+        TreeNode n = root;
+        LinkedList<TreeNode> ll = new LinkedList<>();
+        ll.add(root);
+        while (!ll.isEmpty()){
+            n = ll.poll();
+            System.out.println(n.data);
+            if(n.leftChild!=null)
+                ll.offer(n.leftChild);
+            if(n.rightChild!=null)
+                ll.offer(n.rightChild);
+        }
+
+    }
 
 
+    /**
+     * 通过前序遍历的数据序列反向生成二叉树
+     *              A
+     *         B            C
+     *      D     E      #      F
+     *    #   # #   #         #    #
+     *
+     * 对应序列：ABD##E##C#F##
+     *
+     */
+    public void createBinaryTreePre(String str){
+        ArrayList<String> data = new ArrayList<>();
+        for(int i = 0; i < str.length(); i++){
+            data.add(str.substring(i, i+1));
+        }
+        createBinaryTreePre(data);
+    }
+
+    public static int index = 0;
+    private TreeNode createBinaryTreePre(ArrayList<String> data){
+        if(data.size() == 0)
+            return null;
+        String d = data.get(index);
+        if(d.equals("#")) {
+            index++;
+            return null;
+        }
+        TreeNode<String> node = new TreeNode<>(index, d);
+        if(index == 0){
+            root = node;
+        }
+        index++;
+        node.leftChild = createBinaryTreePre(data);
+        node.rightChild = createBinaryTreePre(data);
+        return node;
     }
 
 
@@ -140,8 +200,12 @@ public class BinaryTree {
         System.out.println("treeHeihgt:"+height);
         int size = binaryTree.getSize();
         System.out.println("treeSize:"+size);
-		binaryTree.preOrder(binaryTree.root);
+		//binaryTree.preOrder(binaryTree.root);
 //      binaryTree.nonRecOrder(binaryTree.root);
+        binaryTree.leverOrder(binaryTree.root);
+//        BinaryTree bt = new BinaryTree();
+//        bt.createBinaryTreePre("ABD##E##C#F##");
+//        bt.preOrder(bt.root);
     }
 
 }
