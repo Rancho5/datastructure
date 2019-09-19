@@ -120,7 +120,48 @@ public class BinaryTree {
             if(n.rightChild!=null)
                 ll.offer(n.rightChild);
         }
+    }
 
+    /**
+     * 通过层序遍历的数据序列反向生成二叉树
+     *              A
+     *         B            C
+     *      D     E      #      F
+     *    #   # #   #         #    #
+     *
+     * 对应层序序列：ABCDE#F######
+     *
+     */
+    public void createBinaryTreeLevel(String str){
+        ArrayList<String> data = new ArrayList<>();
+        for(int i = 0; i < str.length(); i++)
+            data.add(str.substring(i, i+1));
+        createBinaryTreeLevel(data);
+    }
+
+    private static int indexLevel = 0;
+    private void createBinaryTreeLevel(ArrayList<String> data){
+        LinkedList<TreeNode<String>> ll = new LinkedList<>();
+        TreeNode<String> n = new TreeNode<>(indexLevel, data.get(indexLevel));
+        ll.add(n);
+        String d;
+        while (!ll.isEmpty()){
+            n = ll.pop();
+            if(indexLevel == 0)
+                root = n;
+            indexLevel++;
+            d = data.get(indexLevel);
+            if(!d.equals("#")){
+                n.leftChild = new TreeNode(indexLevel, d);
+                ll.add(n.leftChild);
+            }
+            indexLevel++;
+            d = data.get(indexLevel);
+            if(!data.get(indexLevel).equals("#")) {
+                n.rightChild = new TreeNode(indexLevel, d);
+                ll.add(n.rightChild);
+            }
+        }
     }
 
 
@@ -194,18 +235,20 @@ public class BinaryTree {
     }
 
     public static void main(String[] args){
-        BinaryTree binaryTree = new BinaryTree();
-        binaryTree.createBinaryTree();
-        int height = binaryTree.getHeight();
-        System.out.println("treeHeihgt:"+height);
-        int size = binaryTree.getSize();
-        System.out.println("treeSize:"+size);
-		//binaryTree.preOrder(binaryTree.root);
-//      binaryTree.nonRecOrder(binaryTree.root);
-        binaryTree.leverOrder(binaryTree.root);
-//        BinaryTree bt = new BinaryTree();
+//        BinaryTree binaryTree = new BinaryTree();
+//        binaryTree.createBinaryTree();
+//        int height = binaryTree.getHeight();
+//        System.out.println("treeHeihgt:"+height);
+//        int size = binaryTree.getSize();
+//        System.out.println("treeSize:"+size);
+//		binaryTree.preOrder(binaryTree.root);
+//        binaryTree.nonRecOrder(binaryTree.root);
+//        binaryTree.leverOrder(binaryTree.root);
+        BinaryTree bt = new BinaryTree();
 //        bt.createBinaryTreePre("ABD##E##C#F##");
 //        bt.preOrder(bt.root);
+        bt.createBinaryTreeLevel("ABCDE#F######");
+        bt.preOrder(bt.root);
     }
 
 }
