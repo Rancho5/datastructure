@@ -18,8 +18,39 @@ import java.util.ArrayList;
 public class BinaryTree {
     private TreeNode root = null;
 
-    public BinaryTree(){
-        root = new TreeNode<String>(1, "A");
+    public BinaryTree(){ }
+
+    public class TreeNode<T>{
+        private int index;
+        private T data;
+        private TreeNode leftChild;
+        private TreeNode rightChild;
+        private TreeNode parent;
+
+        public int getIndex() {
+            return index;
+        }
+
+        public void setIndex(int index) {
+            this.index = index;
+        }
+
+        public T getData() {
+            return data;
+        }
+
+        public void setData(T data) {
+            this.data = data;
+        }
+
+        public TreeNode(int index, T data){
+            this.index = index;
+            this.data = data;
+            this.leftChild = null;
+            this.rightChild = null;
+            this.parent = null;
+        }
+
     }
 
     /**
@@ -29,6 +60,7 @@ public class BinaryTree {
      * D      E        F
      */
     public void createBinaryTree(){
+        root = new TreeNode<>(1, "A");
         TreeNode<String> nodeB = new TreeNode<>(2, "B");
         TreeNode<String> nodeC = new TreeNode<>(3, "C");
         TreeNode<String> nodeD = new TreeNode<>(4, "D");
@@ -68,7 +100,7 @@ public class BinaryTree {
     private int getSize(TreeNode node){
         if(node == null)
             return 0;
-        return getSize(node.rightChild) + getSize(node.leftChild)+1;
+        return getSize(node.rightChild) + getSize(node.leftChild) + 1;
     }
 
     /**
@@ -104,7 +136,46 @@ public class BinaryTree {
     }
 
     /**
+     * 通过前序遍历的数据序列反向生成二叉树
+     *              A
+     *         B            C
+     *      D     E      #      F
+     *    #   # #   #         #    #
+     *
+     * 对应序列：ABD##E##C#F##
+     *
+     */
+    public void createBinaryTreePre(String str){
+        ArrayList<String> data = new ArrayList<>();
+        for(int i = 0; i < str.length(); i++){
+            data.add(str.substring(i, i+1));
+        }
+        createBinaryTreePre(data);
+    }
+
+    private int index = 0;
+    private TreeNode createBinaryTreePre(ArrayList<String> data){
+        if(data.size() == 0)
+            return null;
+        String d = data.get(index);
+        if(d.equals("#")) {
+            index++;
+            return null;
+        }
+        TreeNode<String> node = new TreeNode<>(index, d);
+        if(index == 0){
+            root = node;
+        }
+        index++;
+        node.leftChild = createBinaryTreePre(data);
+        node.rightChild = createBinaryTreePre(data);
+        return node;
+    }
+
+
+    /**
      * 层序遍历--利用队列
+     *
      */
     public void leverOrder(TreeNode node){
         if(node == null)
@@ -139,7 +210,7 @@ public class BinaryTree {
         createBinaryTreeLevel(data);
     }
 
-    private static int indexLevel = 0;
+    private int indexLevel = 0;
     private void createBinaryTreeLevel(ArrayList<String> data){
         LinkedList<TreeNode<String>> ll = new LinkedList<>();
         TreeNode<String> n = new TreeNode<>(indexLevel, data.get(indexLevel));
@@ -164,75 +235,89 @@ public class BinaryTree {
         }
     }
 
-
     /**
-     * 通过前序遍历的数据序列反向生成二叉树
-     *              A
-     *         B            C
-     *      D     E      #      F
-     *    #   # #   #         #    #
-     *
-     * 对应序列：ABD##E##C#F##
+     * 查找二叉树增加结点--递归实现
      *
      */
-    public void createBinaryTreePre(String str){
-        ArrayList<String> data = new ArrayList<>();
-        for(int i = 0; i < str.length(); i++){
-            data.add(str.substring(i, i+1));
-        }
-        createBinaryTreePre(data);
+    public void putSearchTree(int data){
+        putSearchTree(root, data);
     }
-
-    public static int index = 0;
-    private TreeNode createBinaryTreePre(ArrayList<String> data){
-        if(data.size() == 0)
-            return null;
-        String d = data.get(index);
-        if(d.equals("#")) {
-            index++;
-            return null;
+    public int indexSearch = 0;
+    public TreeNode<Integer> putSearchTree(TreeNode<Integer> node, int data){
+        if(root == null){
+            root = new TreeNode(indexSearch, data);
+            indexSearch++;
+            return root;
         }
-        TreeNode<String> node = new TreeNode<>(index, d);
-        if(index == 0){
-            root = node;
+        if(node == null){
+            node = new TreeNode(indexSearch, data);
+            indexSearch++;
+            return node;
         }
-        index++;
-        node.leftChild = createBinaryTreePre(data);
-        node.rightChild = createBinaryTreePre(data);
+        if(data < node.data){
+            node.leftChild = putSearchTree(node.leftChild, data);
+        }
+        else if(data > node.data){
+            node.rightChild = putSearchTree(node.rightChild, data);
+        }
+        else ;
         return node;
     }
 
 
-    public class TreeNode<T>{
-        private int index;
-        private T data;
-        private TreeNode leftChild;
-        private TreeNode rightChild;
-
-        public TreeNode(int index, T data){
-            this.index = index;
-            this.data = data;
-            this.leftChild = null;
-            this.rightChild = null;
+    /**
+     * 查找二叉树增加结点--非递归实现
+     *
+     */
+    public void nonRecPutSearchTree(int data){
+        TreeNode<Integer> node = null;
+        if(root == null){
+            node = new TreeNode<>(indexSearch, data);
+            root = node;
+            indexSearch++;
+            return;
         }
-
-        public int getIndex() {
-            return index;
+        node = root;
+        TreeNode<Integer> parent = null;
+        while (node != null){
+            parent = node;
+            if(data < node.data)
+                node = node.leftChild;
+            else if(data > node.data)
+                node = node.rightChild;
+            else
+                return;
         }
+        node = new TreeNode<>(indexSearch, data);
+        if(data<parent.data)
+            parent.leftChild = node;
+        else
+            parent.rightChild = node;
+        indexSearch++;
+    }
 
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public T getData() {
-            return data;
-        }
-
-        public void setData(T data) {
-            this.data = data;
-        }
+    //TODO:查找二叉树删除结点
+    /**
+     * 查找二叉树删除结点
+     *
+     */
+    public void removeSearch(int data){
 
     }
+
+
+    /**
+     * 中序遍历
+     *
+     */
+    public void midOrder(TreeNode node){
+        if(node == null)
+            return;
+        midOrder(node.leftChild);
+        System.out.println(node.data);
+        midOrder(node.rightChild);
+    }
+
 
     public static void main(String[] args){
 //        BinaryTree binaryTree = new BinaryTree();
@@ -241,15 +326,30 @@ public class BinaryTree {
 //        System.out.println("treeHeihgt:"+height);
 //        int size = binaryTree.getSize();
 //        System.out.println("treeSize:"+size);
-//		binaryTree.preOrder(binaryTree.root);
+//		  binaryTree.preOrder(binaryTree.root);
 //        binaryTree.nonRecOrder(binaryTree.root);
 //        binaryTree.leverOrder(binaryTree.root);
-        BinaryTree bt = new BinaryTree();
-//        bt.createBinaryTreePre("ABD##E##C#F##");
-//        bt.preOrder(bt.root);
-        bt.createBinaryTreeLevel("ABCDE#F######");
-        bt.preOrder(bt.root);
-    }
 
+        BinaryTree bt = new BinaryTree();
+        bt.createBinaryTreePre("ABD##E##C#F##");
+        bt.preOrder(bt.root);
+//        bt.createBinaryTreeLevel("ABCDE#F######");
+//        bt.preOrder(bt.root);
+
+//        测试查找二叉树
+//        BinaryTree bt = new BinaryTree();
+//        int[] intArray = new int[]{23, 34 , 43, 23, 34, 54, 23, 4, 6};
+//        for(int i : intArray)
+//            bt.putSearchTree(i);
+//        bt.midOrder(bt.root);
+//        System.out.println("index="+bt.indexSearch);
+//        System.out.println("#########################");
+//        BinaryTree bt2 = new BinaryTree();
+//        int[] intArray2 = new int[]{2, 3, 4};
+//        for(int i : intArray2)
+//            bt2.putSearchTree(i);
+//        bt2.midOrder(bt2.root);
+//        System.out.println("index="+bt2.indexSearch);
+    }
 }
 

@@ -25,9 +25,9 @@ public class LinkedList<T> {
         voidLink.next = voidLink;
     }
 
-    //Todo:将collection变为链表
+    //TODO:将collection变为链表
     public LinkedList(Collection<? extends T> collection){
-        //Todo
+        //TODO
     }
 
     //add, remove, set and contains
