@@ -11,6 +11,7 @@ package com.test;
 二叉树的遍历：前序遍历（根-左-右）、中序遍历（左-根-右）、后序遍历（左-右-根）、层序遍历
  */
 
+import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
 import sun.reflect.generics.tree.Tree;
 import java.util.LinkedList;
 import java.util.ArrayList;
@@ -296,15 +297,94 @@ public class BinaryTree {
         indexSearch++;
     }
 
-    //TODO:查找二叉树删除结点
     /**
      * 查找二叉树删除结点
      *
      */
-    public void removeSearch(int data){
-
+    public void deleteNode(int data) throws Exception {
+        TreeNode<Integer> node = getNode(data);
+        if(node == null)
+            throw new Exception("不存在该结点");
+        TreeNode<Integer> parent = getParent(data);
+        //既没有左孩子，也没有右孩子
+        if(node.leftChild==null && node.rightChild==null){
+            if(parent.leftChild==node)
+                parent.leftChild = null;
+            if(parent.rightChild==node)
+                parent.rightChild = null;
+        }
+        //只有左孩子，没有右孩子
+        if(node.leftChild!=null && node.rightChild==null){
+            if(parent.leftChild==node)
+                parent.leftChild = node.leftChild;
+            if(parent.rightChild==node)
+                parent.rightChild = node.leftChild;
+        }
+        //只有右孩子，没有左孩子
+        if(node.leftChild==null && node.rightChild!=null){
+            if(parent.leftChild==node)
+                parent.leftChild = node.rightChild;
+            if(parent.rightChild==node)
+                parent.rightChild = node.rightChild;
+        }
+        //左右孩子都有
+        if(node.leftChild!=null && node.rightChild!=null){
+            TreeNode<Integer> next = getNextNode(data);
+            deleteNode(next.data);
+            node.data = next.data;
+        }
     }
 
+    //查找结点
+    private TreeNode<Integer> getNode(int data){
+        TreeNode<Integer> node = root;
+        while (node != null){
+            if(node.data == data)
+                return node;
+            else if(node.data > data)
+                node = node.leftChild;
+            else
+                node = node.rightChild;
+        }
+        return null;
+    }
+
+    //查找结点的父节点
+    private TreeNode<Integer> getParent(int data) {
+        TreeNode<Integer> node = root;
+        TreeNode<Integer> parent = null;
+        while (node!=null){
+            if(node.data == data)
+                return parent;
+            parent = node;
+            if(node.data < data)
+                node = node.rightChild;
+            else
+                node = node.leftChild;
+        }
+        return null;
+    }
+
+    //查找后继节点
+    private TreeNode<Integer> getNextNode(int data) {
+        if(root == null)
+            return null;
+        TreeNode<Integer> node = getNode(data);
+        TreeNode<Integer> next = null;
+        //分情况：node有右节点，无右结点
+        if(node.rightChild!=null){
+            next = node.rightChild;
+            while (next.leftChild!=null)
+                next = next.leftChild;
+            return next;
+        }else{
+            TreeNode<Integer> parent = getParent(data);
+            while(getParent(parent.getData())!=null){
+                parent = getParent(parent.getData());
+            }
+            return parent;
+        }
+    }
 
     /**
      * 中序遍历
@@ -319,7 +399,7 @@ public class BinaryTree {
     }
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws Exception {
 //        BinaryTree binaryTree = new BinaryTree();
 //        binaryTree.createBinaryTree();
 //        int height = binaryTree.getHeight();
@@ -330,9 +410,9 @@ public class BinaryTree {
 //        binaryTree.nonRecOrder(binaryTree.root);
 //        binaryTree.leverOrder(binaryTree.root);
 
-        BinaryTree bt = new BinaryTree();
-        bt.createBinaryTreePre("ABD##E##C#F##");
-        bt.preOrder(bt.root);
+//        BinaryTree bt = new BinaryTree();
+//        bt.createBinaryTreePre("ABD##E##C#F##");
+//        bt.preOrder(bt.root);
 //        bt.createBinaryTreeLevel("ABCDE#F######");
 //        bt.preOrder(bt.root);
 
@@ -350,6 +430,16 @@ public class BinaryTree {
 //            bt2.putSearchTree(i);
 //        bt2.midOrder(bt2.root);
 //        System.out.println("index="+bt2.indexSearch);
+
+//      测试查找二叉树的删除功能
+        BinaryTree bt = new BinaryTree();
+        int[] intArray = new int[]{23, 34 , 43, 23, 34, 54, 23, 4, 6, 35, 2, 1, 5, 10};
+        for(int i : intArray)
+            bt.putSearchTree(i);
+        bt.midOrder(bt.root);
+        System.out.println("#####################");
+        bt.deleteNode(54);
+        bt.midOrder(bt.root);
     }
 }
 
