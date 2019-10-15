@@ -10,8 +10,9 @@ public class Test{
     private static int a = 100;
 
     public static void main(String[] args) {
-        List l = new ArrayList<String>();
-        l.add(a);
+        boolean[] b = new boolean[2];
+        System.out.println(b[0]);
+
     }
 }
 
