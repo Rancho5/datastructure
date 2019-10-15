@@ -1,5 +1,7 @@
 package com.test;
 
+import java.util.LinkedList;
+
 public class Graph {
     private int vertexNum;
     private int[] vertex;
@@ -104,8 +106,33 @@ public class Graph {
         }
     }
 
-
-
+    /**
+     * 图的广度优先遍历
+     *
+     */
+    public void broadFirstSearch(){
+        isVisited = new boolean[vertexNum];
+        LinkedList<Integer> queue = new LinkedList<>();
+        for(int i = 0; i < vertexNum; i++){
+            if(!isVisited[i]){
+                System.out.println("访问到了"+i);
+                isVisited[i] = true;
+                queue.add(i);
+                while (!queue.isEmpty()){
+                    int first = queue.removeFirst();        //移除队列中的第一个元素
+                    int n = getFirstNeighbor(i);
+                    while (n != -1){
+                        if(!isVisited[n]){
+                            System.out.println("访问到了"+n);
+                            isVisited[n] = true;
+                            queue.add(n);
+                        }
+                        n = getNextNeighbor(first, n);
+                    }
+                }
+            }
+        }
+    }
 
     public static void main(String[] args){
         Graph g = new Graph(9  );
@@ -135,7 +162,8 @@ public class Graph {
 //        int weight = g.getWeight(1, 4);
 //        System.out.println(weight);
 
-        g.depthFirstSearch();
+//        g.depthFirstSearch();
+        g.broadFirstSearch();
 
     }
 
