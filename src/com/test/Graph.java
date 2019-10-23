@@ -16,6 +16,7 @@ public class Graph {
             vertex[i] = i;
         }
     }
+
     /**
      * 获取节点的入度
      *
@@ -31,7 +32,6 @@ public class Graph {
 
     /**
      * 获取节点的出度
-     *
      */
     public int getOutDegree(int index){
         int degree = 0;
@@ -44,7 +44,6 @@ public class Graph {
 
     /**
      * 获取节点的权值
-     *
      */
     public int getWeight(int index1, int index2){
         int weight = matrix[index1][index2];
@@ -80,7 +79,6 @@ public class Graph {
 
     /**
      * 类内部的图的深度优先遍历
-     *
      */
     private void depthFirstSearch(int i){
         System.out.println("访问到了"+i);
@@ -95,7 +93,6 @@ public class Graph {
 
     /**
      * 对外公开的图的深度优先遍历
-     *
      */
     public void depthFirstSearch(){
         isVisited = new boolean[vertexNum];
@@ -108,7 +105,6 @@ public class Graph {
 
     /**
      * 图的广度优先遍历
-     *
      */
     public void broadFirstSearch(){
         isVisited = new boolean[vertexNum];
@@ -132,6 +128,38 @@ public class Graph {
                 }
             }
         }
+    }
+
+    /**
+     * 最小生成树之普利姆算法
+     */
+    public void prim(){
+        int min, minId, sum = 0;
+        int[] lowcost = new int[vertexNum];     //已经连通的部分与剩下节点的最小距离，0表示已连通
+        int[] adjvex = new int[vertexNum];      //未连通节点的最邻近节点
+        for(int i = 0; i < vertexNum; i++){     //初始化lowcost数组
+            lowcost[i] = matrix[0][i];
+        }
+        for(int i = 1; i < vertexNum; i++){     //v0为起点，循环只需要从1开始
+            min = 10000;                        //初始给min一个很大的值，方便后面找到小值替换
+            minId = 0;
+            for(int j = 0; j < vertexNum; j++){   //选出lowcost中最小的
+                if(lowcost[j]>0 && lowcost[j]<min){
+                    min = lowcost[j];
+                    minId = j;
+                }
+            }
+            System.out.println(minId+"连接到"+adjvex[minId]+",权值为："+min);
+            sum += min;
+            lowcost[minId] = 0;
+            for(int j = 0; j < vertexNum; j++){
+                if((lowcost[j]<0 && matrix[minId][j]>0) || (matrix[minId][j]>0 && matrix[minId][j]<lowcost[j])){
+                    lowcost[j] = matrix[minId][j];
+                    adjvex[j] = minId;
+                }
+            }
+        }
+        System.out.println("最小权重是："+sum);
     }
 
     public static void main(String[] args){
@@ -163,7 +191,9 @@ public class Graph {
 //        System.out.println(weight);
 
 //        g.depthFirstSearch();
-        g.broadFirstSearch();
+//        g.broadFirstSearch();
+
+        g.prim();
 
     }
 

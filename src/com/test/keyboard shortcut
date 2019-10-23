@@ -1,0 +1,25 @@
+IDEA快捷键设置
+
+Ctrl+Shift+Z    重做
+
+Ctrl+Y          删除当前行
+
+Ctrl+F          当前文件检索
+Ctrl+Shift+F    全文检索
+Double Shift    全局查找文件
+
+Ctrl+R          当前文件查找替换
+Ctrl+Shift+R    全局检索替换
+
+Alt+F7          查找当前这个方法被调用的地方
+Ctrl+Alt+B      快速定位当前方法的实现
+
+Alt+Insert      插入 构造器， getter，setter，重写， 实现接口 等
+
+Ctrl+Shift+/    整段注释
+
+Ctrl+Alt+L      格式化(规范代码)
+Ctrl+Alt+O      优化import
+Alt+Enter       自动导入包
+
+
