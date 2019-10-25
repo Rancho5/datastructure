@@ -232,7 +232,8 @@ public class Graph {
      * 并查集寻找节点的父节点，用来判断是否回环
      *
      */
-    private int find(int i){
+    //非递归实现
+    private int noRecFind(int i){
         int result = i;
         while (fatherNode[result] != result){
             result = fatherNode[result];
@@ -244,6 +245,12 @@ public class Graph {
             i = temp;
         }
         return result;
+    }
+    //递归实现
+    private int find(int i){
+        if(fatherNode[i] == i)
+            return i;
+        return i = find(fatherNode[i]);
     }
 
     /**
