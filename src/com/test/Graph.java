@@ -7,6 +7,9 @@ public class Graph {
     private int[] vertex;
     private int[][] matrix;
     private boolean[] isVisited;
+    private Edge[] edges;
+    private int[] fatherNode;       //记录父节点，用来判断回环
+    private int edgeNum;
 
     public Graph(int vertexNum){
         this.vertexNum = vertexNum;
@@ -159,8 +162,124 @@ public class Graph {
                 }
             }
         }
-        System.out.println("最小权重是："+sum);
+        System.out.println("最小权值和是："+sum);
     }
+
+
+
+    //接下来是 最小生成树之克鲁斯卡尔算法
+
+    public class Edge{
+        private int begin;
+        private int end;
+        private int weight;
+
+        public Edge(int begin, int end, int weight) {
+            this.begin = begin;
+            this.end = end;
+            this.weight = weight;
+        }
+
+        public int getBegin() {
+            return begin;
+        }
+
+        public void setBegin(int begin) {
+            this.begin = begin;
+        }
+
+        public int getEnd() {
+            return end;
+        }
+
+        public void setEnd(int end) {
+            this.end = end;
+        }
+
+        public int getWeight() {
+            return weight;
+        }
+
+        public void setWeight(int weight) {
+            this.weight = weight;
+        }
+    }
+
+    /**
+     * 根据顶点矩阵生成边集合
+     *
+     */
+    private void setEdge(){
+        for(int i = 0; i < vertexNum; i++){
+            for(int j = i+1; j < vertexNum; j++){
+                if(matrix[i][j]>0)
+                    edgeNum++;
+            }
+        }
+        edges = new Edge[edgeNum];
+        int index = 0;
+        for(int i = 0; i < vertexNum; i++){
+            for(int j = i+1; j < vertexNum; j++){
+                if(matrix[i][j]>0){
+                    Edge e = new Edge(i, j, matrix[i][j]);
+                    edges[index++] = e;
+                }
+            }
+        }
+    }
+
+    /**
+     * 并查集寻找节点的父节点，用来判断是否回环
+     *
+     */
+    private int find(int i){
+        int result = i;
+        while (fatherNode[result] != result){
+            result = fatherNode[result];
+        }
+        int temp;
+        while (i != result){            //路径压缩
+            temp = fatherNode[i];
+            fatherNode[i] = result;
+            i = temp;
+        }
+        return result;
+    }
+
+    /**
+     * kruskal算法
+     *
+     */
+    public void kruskal(){
+        this.setEdge();
+        fatherNode = new int[vertexNum];        //初始化fatherNode数组
+        for(int i = 0; i < vertexNum; i++){
+            fatherNode[i] = i;
+        }
+
+        for(int i = 0; i < edgeNum; i++){     //冒泡排序将edge按照权重从小到大排序
+            for(int j = edgeNum-1; j > i; j--){
+                Edge temp;
+                if(edges[j].weight<edges[j-1].weight){
+                    temp = edges[j-1];
+                    edges[j-1] = edges[j];
+                    edges[j] = temp;
+                }
+            }
+        }
+
+        int sum = 0;
+        for(int i = 0; i < edgeNum; i++){
+            if(find(edges[i].begin)!=find(edges[i].end)){
+                System.out.println(edges[i].begin+"连接到"+edges[i].end+",权值为："+edges[i].weight);
+                sum += edges[i].weight;
+                fatherNode[find(edges[i].begin)] = edges[i].end;
+            }
+        }
+        System.out.println("最小权值和是："+sum);
+
+    }
+
 
     public static void main(String[] args){
         Graph g = new Graph(9  );
@@ -193,8 +312,9 @@ public class Graph {
 //        g.depthFirstSearch();
 //        g.broadFirstSearch();
 
-        g.prim();
+//        g.prim();
 
+        g.kruskal();
     }
 
 
