@@ -23,6 +23,6 @@ public class BinarySearch {
     public static void main(String[] args) {
         int[] arr = {49,38,65,97,76,13,27,49,78,34,12,64,1};
         BinaryInsertSort.binaryInsertSort(arr);
-        binarySearch(arr, 97);
+        binarySearch(arr, 4);
     }
 }
