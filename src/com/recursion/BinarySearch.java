@@ -1,8 +1,6 @@
-package com.search;
+package com.recursion;
 
 import com.sort.BinaryInsertSort;
-
-import java.util.Arrays;
 
 public class BinarySearch {
     public static void binarySearch(int[] arr, int num){
