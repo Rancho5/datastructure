@@ -1,6 +1,6 @@
 package com.algorithm;
 
-//分治法安排循环赛
+//分治法安排循环赛：仅适用于球队数量n=2的某次方的形式
 
 public class RoundRobin {
     public void roundRobin(int n){       //n支球队
