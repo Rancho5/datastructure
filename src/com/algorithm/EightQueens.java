@@ -9,7 +9,6 @@ public class EightQueens {
 
     public void putQueens(){
             putQueens(0);
-
     }
 
     private void putQueens(int i) {         //放置第i列的皇后
