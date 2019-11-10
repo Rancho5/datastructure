@@ -1,4 +1,4 @@
-package com.test;
+package com.datastructure;
 
 import java.util.LinkedList;
 
@@ -167,7 +167,7 @@ public class Graph {
 
 
 
-    //接下来是 最小生成树之克鲁斯卡尔算法
+    //最小生成树之克鲁斯卡尔算法
 
     public class Edge{
         private int begin;
@@ -287,6 +287,36 @@ public class Graph {
 
     }
 
+    /**
+     * 迪杰斯特拉算法
+     * @param begin 起点
+     * 打印起点到每个节点的最短长度
+     */
+    public void dijkstra(int begin){
+        int[] shortestPath = new int[vertexNum];
+        for(int i = 0; i < vertexNum; i++){
+            shortestPath[i] = matrix[begin][i];
+        }
+        for(int i = 0; i < vertexNum; i++){
+            if(i==begin){                       //begin那一行不用考虑
+                continue;
+            }
+            for(int j = 0; j < vertexNum; j++){
+                if(matrix[i][j] > 0){
+                    if(shortestPath[j]<=0&&shortestPath[i]>0)
+                        shortestPath[j] = shortestPath[i]+matrix[i][j];
+                    else if(shortestPath[j]>0&&shortestPath[i]>0&&shortestPath[i]+matrix[i][j]<shortestPath[j])
+                        shortestPath[j] = shortestPath[i]+matrix[i][j];
+                }
+            }
+        }
+        for(int i = 0; i < vertexNum; i++){
+            if(i!=begin){
+                System.out.println("节点"+begin+"到节点"+i+"的最小距离为"+shortestPath[i]);
+            }
+        }
+    }
+
 
     public static void main(String[] args){
         Graph g = new Graph(9  );
@@ -321,8 +351,11 @@ public class Graph {
 
 //        g.prim();
 
-        g.kruskal();
+//        g.kruskal();
+
+        g.dijkstra(0);
     }
+
 
 
 

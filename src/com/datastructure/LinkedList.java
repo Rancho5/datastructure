@@ -1,4 +1,4 @@
-package com.test;
+package com.datastructure;
 
 import java.util.Collection;
 
@@ -149,16 +149,16 @@ public class LinkedList<T> {
 
         ll.add(0,"insertElement1");
         ll.add(9,"insertElement2");
-        System.out.print("test add: ");
+        System.out.print("datastructure add: ");
         ll.printData();
 
         ll.remove(9);
         ll.remove(0);
-        System.out.print("test remove: ");
+        System.out.print("datastructure remove: ");
         ll.printData();
 
         ll.set(2, "setElement1");
-        System.out.print("test set: ");
+        System.out.print("datastructure set: ");
         ll.printData();
 
         System.out.println(ll.contains("element1"));

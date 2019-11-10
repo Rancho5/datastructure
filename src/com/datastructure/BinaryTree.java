@@ -1,4 +1,4 @@
-package com.test;
+package com.datastructure;
 
 /*
 学习树（Tree）
@@ -11,8 +11,6 @@ package com.test;
 二叉树的遍历：前序遍历（根-左-右）、中序遍历（左-根-右）、后序遍历（左-右-根）、层序遍历
  */
 
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
-import sun.reflect.generics.tree.Tree;
 import java.util.LinkedList;
 import java.util.ArrayList;
 

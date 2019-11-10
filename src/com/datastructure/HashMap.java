@@ -1,4 +1,4 @@
-package com.test;
+package com.datastructure;
 
 /*
 学习HashMap和LinkedHashMap, （LinkedHashMap可以用于实现LruCache算法）

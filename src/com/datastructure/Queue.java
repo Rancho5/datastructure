@@ -1,4 +1,4 @@
-package com.test;
+package com.datastructure;
 
 //链式队列	在LinkedList基础上实现
 public class Queue<T> {
